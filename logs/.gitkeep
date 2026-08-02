@@ -1,0 +1,2 @@
+# Logs directory placeholder for git
+# Docker bind mount will store rotated logs (api_audit.log) in this directory.

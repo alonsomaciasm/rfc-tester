@@ -1,0 +1,46 @@
+MIT License
+
+Copyright (c) 2026 MC. José Alonso Macías Montoya - Universidad Politécnica de Chiapas (jmacias@upchiapas.edu.mx)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice (including the author credits below) shall be included in all
+copies or substantial portions of the Software.
+
+AUTHORS / CREDITS:
+- Autor: MC. José Alonso Macías Montoya
+- Correo electrónico: jmacias@upchiapas.edu.mx
+- Institución: Universidad Politécnica de Chiapas
+
+CONDICIÓN DE USO:
+Este código es de uso libre, abierto y gratuito. En caso de ser utilizado, distribuido,
+modificado o integrado en otros proyectos o servicios, se requiere dar la debida mención o
+atribución de autoría a su creador e institución origen.
+
+MARCO LEGAL Y PROTECCIÓN DE DATOS PERSONALES:
+1. Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP - México):
+   Esta API funciona exclusivamente en modalidad stateless (procesamiento en memoria sin persistencia ni 
+   almacenamiento en bases de datos o archivos de registro de datos personales/PII).
+2. Responsabilidad de Tratamiento de Datos:
+   Toda persona física o moral que despliegue, hospede, integre o ponga a disposición del público esta API
+   asume la responsabilidad legal exclusiva como "Responsable del Tratamiento de Datos" en términos de la LFPDPPP,
+   estando obligada a contar con su propio Aviso de Privacidad y cumplir con la normativa aplicable del INAI.
+
+DESLINDE DE RESPONSABILIDAD (DISCLAIMER):
+El autor (MC. José Alonso Macías Montoya) y la Universidad Politécnica de Chiapas quedan totalmente
+eximidos de cualquier responsabilidad civil, penal, administrativa o mercantil derivada de la recolección,
+uso indebido, negligencia, desvío o tratamiento ilícito de datos que realicen terceros utilizando esta herramienta.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+

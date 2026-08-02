@@ -1,0 +1,44 @@
+services:
+  rfc-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rfc_verifier_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: unless-stopped
+    read_only: false
+    volumes:
+      - ./logs:/app/logs
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\")' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    # ==============================================================================
+    # LÍMITES DE RECURSOS (HARDENING HARDWARE - CIS DOCKER BENCHMARK)
+    # ------------------------------------------------------------------------------
+    # Para pruebas de carga masiva / estrés sin restricciones (Load Testing con k6/JMeter),
+    # puedes comentar el bloque 'deploy' inferior.
+    # ==============================================================================
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          memory: 128M
+
+
+
+
+
