@@ -5,8 +5,12 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](Dockerfile)
 [![OWASP Compliance](https://img.shields.io/badge/Security-OWASP%20API%20Top%2010-red.svg)](https://owasp.org/www-project-api-security/)
+[![MCP](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-blueviolet.svg)](#interoperabilidad-con-agentes-de-ia-mcp)
 
 Servicio RESTful de alto rendimiento y ciberseguridad para la verificación sintáctica, cálculo del dígito verificador y cotejo de coincidencia de RFCs (Físicos y Morales) con datos fiscales (Trinomio CFDI 4.0: RFC + Nombre + CP).
+
+## 🤖 Interoperabilidad con Agentes de IA (MCP Protocol)
+El servicio cuenta con soporte nativo para **Model Context Protocol (MCP)** mediante el endpoint `POST /api/v1/mcp/rpc`. Expone herramientas JSON-RPC 2.0 (`validar_sintaxis_rfc`, `cotejar_trinomio_fiscal`, `consultar_rfc_sat_live`) que permiten a LLMs (Gemini, Claude, GPT, Antigravity) ejecutar validaciones deterministas y cotejos en tiempo real con reducción radical en el consumo de tokens de contexto.
 
 ---
 

@@ -26,6 +26,12 @@ from contextlib import asynccontextmanager
 from app.sat_service import verify_rfc_live_sat, verify_rfc_sat_live_service, close_http_client
 from app.security import verify_api_key
 from app.logger import logger, AuditCorrelationMiddleware
+from app.exceptions import (
+    APIProblemException,
+    rfc7807_exception_handler,
+    validation_exception_handler,
+)
+from app.mcp_server import mcp
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -113,38 +119,10 @@ async def audit_and_security_middleware(request: Request, call_next):
     
     return response
 
-# Manejador Global de Errores No Controlados (Evita leak de Stack Trace - HTTP 500)
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    req_id = getattr(request.state, "request_id", "N/A")
-    logger.error(f"Error interno no controlado: {str(exc)}", extra={"request_id": req_id})
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={
-            "error_code": "INTERNAL_SERVER_ERROR",
-            "message": "Ha ocurrido un error interno en el servidor. Por favor reintente más tarde.",
-            "request_id": req_id
-        }
-    )
-
-# Manejador Personalizado de Errores de Validación (HTTP 422)
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    req_id = getattr(request.state, "request_id", "N/A")
-    errors = []
-    for err in exc.errors():
-        field_name = ".".join([str(loc) for loc in err["loc"] if loc != "body"])
-        errors.append({"field": field_name, "message": err["msg"]})
-        
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={
-            "error_code": "INVALID_PAYLOAD",
-            "message": "Uno o más campos de la petición no cumplen con el formato requerido.",
-            "errors": errors,
-            "request_id": req_id
-        }
-    )
+# Manejador Global de Errores Estandarizado (RFC 7807 Problem Details)
+app.add_exception_handler(APIProblemException, rfc7807_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(Exception, rfc7807_exception_handler)
 
 def sanitize_input(text: str) -> str:
     """Normaliza texto eliminando caracteres invisibles y aplicando forma NFKC."""
@@ -248,4 +226,18 @@ async def verify_rfc_sat_live(
     clean_r = clean_rfc(sanitize_input(body.rfc))
     result = await verify_rfc_sat_live_service(clean_r)
     return SATLiveVerificationResponse(**result)
+
+@app.post(
+    f"{settings.API_V1_STR}/mcp/rpc",
+    tags=["AI Agent MCP"],
+    summary="Endpoint JSON-RPC 2.0 para Agentes de IA y LLMs (Model Context Protocol)"
+)
+async def mcp_rpc_endpoint(request: Request, api_key: str = Depends(verify_api_key)):
+    """
+    Permite a modelos de lenguaje (Claude, GPT, Gemini, agentes autónomos) invocar herramientas
+    de validación de RFC y cotejo del SAT mediante el protocolo estándar MCP (Model Context Protocol).
+    """
+    body_text = (await request.body()).decode("utf-8")
+    response_json = await mcp.handle_jsonrpc_request(body_text)
+    return JSONResponse(content=json.loads(response_json), media_type="application/json")
 
